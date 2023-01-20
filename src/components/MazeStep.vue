@@ -10,6 +10,10 @@ export default defineComponent({
     stepClass() {
       let wall = '';
 
+      if (this.stepType === 2) {
+        wall = 'is-path';
+      }
+
       if (this.stepType === 0) {
         wall = 'is-barricade';
       }
@@ -40,6 +44,11 @@ export default defineComponent({
   width: 3em;
 }
 
+.is-barricade {
+  background-color: black;
+  border-color: black;
+}
+
 .is-beginning {
   background-color: green;
 }
@@ -48,8 +57,7 @@ export default defineComponent({
   background-color: red;
 }
 
-.is-barricade {
-  background-color: black;
-  border-color: black;
+.is-path {
+  background-color: blue;
 }
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, createApp } from 'vue';
 import Maze from './Maze.vue';
 
 export default defineComponent({
@@ -21,19 +21,17 @@ export default defineComponent({
   data() {
     return {
       previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
-        Array.from({ length: this.maze[0].length }, () => false)
+        Array.from({ length: this.maze[0].length }, () => 0)
       ),
     };
   },
   methods: {
     perform(row, col) {
       if (this.maze[row][col] === 'x') {
+        console.log('DONE!');
         return;
-      } else if (
-        this.maze[row][col] === 1 &&
-        !this.previouslyVisitedSteps[row][col]
-      ) {
-        this.previouslyVisitedSteps[row][col] = true;
+      } else if (this.maze[row][col] === 1 && this.maze[row][col] !== 2) {
+        this.maze[row][col] = 2;
 
         if (col < this.maze[0].length - 1) {
           this.perform(row, col + 1);
@@ -55,8 +53,6 @@ export default defineComponent({
   },
   mounted() {
     this.perform(this.enteranceCoordinates[0], this.enteranceCoordinates[1]);
-
-    console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
