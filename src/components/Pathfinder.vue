@@ -18,43 +18,99 @@ export default defineComponent({
       return [firstColumn.indexOf(1), 0];
     },
   },
+  data() {
+    return {
+      previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
+        Array.from({ length: this.maze[0].length }, () => false)
+      ),
+    };
+  },
   methods: {
-    perform(row, column) {
+    perform(row, col) {
       let currentRow = row;
-      let currentCol = column;
-      let previousRow = null;
-      let previousCol = null;
-      let complete = false;
+      let currentCol = col;
+      let finalPath = [];
+
+      if (this.maze[currentRow][currentCol] === 'x') {
+        return finalPath;
+      }
+
+      if (this.checkNorth(currentRow, currentCol)) {
+        this.moveNorth(currentRow, currentCol);
+      }
+
+      if (this.checkEast(currentRow, currentCol)) {
+        this.moveEast(currentRow, currentCol);
+      }
+
+      if (this.checkSouth(currentRow, currentCol)) {
+        this.moveSouth(currentRow, currentCol);
+      }
+
+      if (this.checkWest(currentRow, currentCol)) {
+        this.moveWest(currentRow, currentCol);
+      }
     },
     checkNorth(row, col) {
-      if (row === 0) return false;
+      let nextRow = row - 1;
+      if (row === 0 || this.previouslyVisited(nextRow, col)) return false;
 
-      return this.maze[row - 1][col] === 1;
+      return this.maze[nextRow][col] !== 0;
     },
     checkEast(row, col) {
-      if (col === this.maze[row].length - 1) return false;
+      let nextCol = col + 1;
+      if (
+        col === this.maze[row].length - 1 ||
+        this.previouslyVisited(row, nextCol)
+      )
+        return false;
 
-      return this.maze[row][col + 1] === 1;
+      return this.maze[row][nextCol] !== 0;
     },
     checkSouth(row, col) {
-      if (row === this.maze.length - 1) return false;
+      let nextRow = row + 1;
+      if (row === this.maze.length - 1 || this.previouslyVisited(nextRow, col))
+        return false;
 
-      return this.maze[row + 1][col] === 1;
+      return this.maze[nextRow][col] !== 0;
     },
     checkWest(row, col) {
-      if (col === 0) return false;
+      let nextCol = col - 1;
+      if (col === 0 || this.previouslyVisited(row, nextCol)) return false;
 
-      return this.maze[row][col - 1] === 1;
+      return this.maze[row][nextCol] !== 0;
     },
-    moveNorth(row, col) {},
+    moveNorth(row, col) {
+      this.updatePreviousCoordinates(row, col);
+      row -= 1;
+      this.perform(row, col);
+    },
     moveEast(row, col) {
-      currentCol += 1;
+      this.updatePreviousCoordinates(row, col);
+      col += 1;
+      this.perform(row, col);
     },
-    moveSouth(row, col) {},
-    moveWest(row, col) {},
+    moveSouth(row, col) {
+      this.updatePreviousCoordinates(row, col);
+      row += 1;
+      this.perform(row, col);
+    },
+    moveWest(row, col) {
+      this.updatePreviousCoordinates(row, col);
+      col -= 1;
+      this.perform(row, col);
+    },
+    previouslyVisited(row, col) {
+      return this.previouslyVisitedSteps[row][col];
+    },
+    updatePreviousCoordinates(row, col) {
+      this.previouslyVisitedSteps[row][col] = true;
+    },
   },
   mounted() {
-    this.perform(this.enteranceCoordinates[0], this.enteranceCoordinates[0]);
+    this.perform(this.enteranceCoordinates[0], this.enteranceCoordinates[1]);
+
+    console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
