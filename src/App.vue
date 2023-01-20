@@ -1,5 +1,6 @@
 <script lang="ts">
 import Pathfinder from './components/Pathfinder.vue';
+
 export default {
   name: 'app',
   components: {
