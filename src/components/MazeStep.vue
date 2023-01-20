@@ -5,17 +5,18 @@ export default defineComponent({
   props: {
     stepType: String,
     isBeginning: Boolean,
+    stepCoordinates: Array,
   },
   computed: {
     stepClass() {
       let wall = '';
 
-      if (this.isBeginning) {
-        wall = 'is-beginning';
-      }
-
       if (this.stepType === 0) {
         wall = 'is-barricade';
+      }
+
+      if (this.isBeginning) {
+        wall = 'is-beginning';
       }
 
       if (this.stepType === 'x') {
