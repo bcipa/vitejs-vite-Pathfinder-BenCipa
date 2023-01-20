@@ -20,17 +20,43 @@ export default defineComponent({
   },
   methods: {
     perform() {
-      console.log('LETS GO');
+      let currentRow = this.enteranceCoordinates[0];
+      let currentCol = this.enteranceCoordinates[1];
+      let previousRow = null;
+      let previousCol = null;
+      let complete = false;
 
-      console.log('DONE');
+      while (complete === false) {}
     },
-    moveNorth() {},
-    moveEast() {},
-    moveSouth() {},
-    moveWest() {},
+    checkNorth(row, col) {
+      if (row === 0) return false;
+
+      return this.maze[row - 1][col] === 1;
+    },
+    checkEast(row, col) {
+      if (col === this.maze[row].length - 1) return false;
+
+      return this.maze[row][col + 1] === 1;
+    },
+    checkSouth(row, col) {
+      if (row === this.maze.length - 1) return false;
+
+      return this.maze[row + 1][col] === 1;
+    },
+    checkWest(row, col) {
+      if (col === 0) return false;
+
+      return this.maze[row][col - 1] === 1;
+    },
+    moveNorth(row, col) {},
+    moveEast(row, col) {
+      currentCol += 1;
+    },
+    moveSouth(row, col) {},
+    moveWest(row, col) {},
   },
   mounted() {
-    this.perform();
+    this.perform(this.enteranceCoordinates[0], this.enteranceCoordinates[0]);
   },
 });
 </script>
