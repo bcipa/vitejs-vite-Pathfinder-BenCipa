@@ -10,22 +10,24 @@ export default defineComponent({
     MazeStep,
   },
   computed: {
-    isBeginning() {
-      return false;
+    enteranceCoordinates() {
+      let firstColumn = this.maze.map(function (value, index) {
+        return value[0];
+      });
+
+      return [firstColumn.indexOf(1), 0];
     },
   },
   methods: {
     perform() {
       console.log('LETS GO');
-      this.findEnterance();
+      
       console.log('DONE');
     },
-    getEnteranceCoordinates() {
-      let firstColumn = this.maze.map(function (value, index) {
-        return value[0];
-      });
-      let startingStep = [0, firstColumn.indexOf(1)];
-      console.log(this.MazeStep);
+    isEnterance(currentCoordinates) {
+      return (
+        currentCoordinates.toString() === this.enteranceCoordinates.toString()
+      );
     },
   },
   mounted() {
@@ -41,11 +43,11 @@ export default defineComponent({
     v-bind:key="rowIndex"
   >
     <MazeStep
-      v-for="(value, column) in row"
+      v-for="(value, columnIndex) in row"
       v-bind:stepType="value"
-      v-bind:isBeginning="false"
-      v-bind:key="column"
-      ref=""
+      v-bind:isBeginning="isEnterance([rowIndex, columnIndex])"
+      v-bind:stepCoordinates="[rowIndex, columnIndex]"
+      v-bind:key="columnIndex"
     />
   </div>
 </template>
