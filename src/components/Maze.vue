@@ -6,42 +6,38 @@ export default defineComponent({
   props: {
     maze: Array,
   },
-  components: {
-    MazeStep,
-  },
-  computed {
-    isBeginning () {
-
-    },
-  },
-  methods: {
-    perform() {
-      console.log('LETS GO');
-      this.findEnterance();
-      console.log('DONE');
-    },
-    getEnteranceCoordinates() {
+  computed: {
+    enteranceCoordinates() {
+      console.log('hola');
       let firstColumn = this.maze.map(function (value, index) {
         return value[0];
       });
-      let startingStep = [0, firstColumn.indexOf(1)];
-      console.log(this.MazeStep);
+
+      return [firstColumn.indexOf(1), 0];
     },
   },
-  mounted() {
-    this.perform();
+  methods: {
+    isEnterance(currentCoordinates) {
+      return (
+        currentCoordinates.toString() === this.enteranceCoordinates.toString()
+      );
+    },
   },
 });
 </script>
 
 <template>
-  <div class="pf-maze-row" v-for="(row, index) in maze" v-bind:key="index">
+  <div
+    class="pf-maze-row"
+    v-for="(row, rowIndex) in maze"
+    v-bind:key="rowIndex"
+  >
     <MazeStep
-      v-for="(value, column) in row"
+      v-for="(value, columnIndex) in row"
       v-bind:stepType="value"
-      v-bind:isBeginning="isBeginning()"
-      v-bind:key="column"
-      ref=""
+      v-bind:isBeginning="isEnterance([rowIndex, columnIndex])"
+      v-bind:stepCoordinates="[rowIndex, columnIndex]"
+      v-bind:key="columnIndex"
     />
   </div>
 </template>
