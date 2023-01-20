@@ -19,14 +19,12 @@ export default defineComponent({
     },
   },
   methods: {
-    perform() {
-      let currentRow = this.enteranceCoordinates[0];
-      let currentCol = this.enteranceCoordinates[1];
+    perform(row, column) {
+      let currentRow = row;
+      let currentCol = column;
       let previousRow = null;
       let previousCol = null;
       let complete = false;
-
-      while (complete === false) {}
     },
     checkNorth(row, col) {
       if (row === 0) return false;
