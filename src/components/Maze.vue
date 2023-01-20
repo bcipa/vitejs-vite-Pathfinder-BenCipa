@@ -5,18 +5,10 @@ import MazeStep from './MazeStep.vue';
 export default defineComponent({
   props: {
     maze: Array,
+    enteranceCoordinates: Array,
   },
   components: {
     MazeStep,
-  },
-  computed: {
-    enteranceCoordinates() {
-      let firstColumn = this.maze.map(function (value, index) {
-        return value[0];
-      });
-
-      return [firstColumn.indexOf(1), 0];
-    },
   },
   methods: {
     isEnterance(currentCoordinates) {
@@ -38,7 +30,6 @@ export default defineComponent({
       v-for="(value, columnIndex) in row"
       v-bind:stepType="value"
       v-bind:isBeginning="isEnterance([rowIndex, columnIndex])"
-      v-bind:stepCoordinates="[rowIndex, columnIndex]"
       v-bind:key="columnIndex"
     />
   </div>

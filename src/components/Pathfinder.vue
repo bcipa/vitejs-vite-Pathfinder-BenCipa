@@ -9,12 +9,25 @@ export default defineComponent({
   components: {
     Maze,
   },
+  computed: {
+    enteranceCoordinates() {
+      let firstColumn = this.maze.map(function (value, index) {
+        return value[0];
+      });
+
+      return [firstColumn.indexOf(1), 0];
+    },
+  },
   methods: {
     perform() {
       console.log('LETS GO');
 
       console.log('DONE');
     },
+    moveNorth() {},
+    moveEast() {},
+    moveSouth() {},
+    moveWest() {},
   },
   mounted() {
     this.perform();
@@ -23,7 +36,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Maze v-bind:maze="maze" />
+  <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
 </template>
 
 <style scoped>

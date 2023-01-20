@@ -5,7 +5,6 @@ export default defineComponent({
   props: {
     stepType: String,
     isBeginning: Boolean,
-    stepCoordinates: Array,
   },
   computed: {
     stepClass() {
