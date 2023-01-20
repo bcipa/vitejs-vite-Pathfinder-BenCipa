@@ -29,10 +29,11 @@ export default defineComponent({
     perform(row, col) {
       let currentRow = row;
       let currentCol = col;
-      let finalPath = [];
+
+      console.log('row: ' + row + ' Col: ' + col);
 
       if (this.maze[currentRow][currentCol] === 'x') {
-        return finalPath;
+        return;
       }
 
       if (this.checkNorth(currentRow, currentCol)) {
