@@ -27,85 +27,30 @@ export default defineComponent({
   },
   methods: {
     perform(row, col) {
-      let currentRow = row;
-      let currentCol = col;
-
-      console.log('row: ' + row + ' Col: ' + col);
-
-      if (this.maze[currentRow][currentCol] === 'x') {
+      if (this.maze[row][col] === 'x') {
         return;
+      } else if (
+        this.maze[row][col] === 1 &&
+        !this.previouslyVisitedSteps[row][col]
+      ) {
+        this.previouslyVisitedSteps[row][col] = true;
+
+        if (col < this.maze[0].length - 1) {
+          this.perform(row, col + 1);
+        }
+
+        if (row < this.maze.length - 1) {
+          this.perform(row + 1, col);
+        }
+
+        if (col > 0) {
+          this.perform(row, col - 1);
+        }
+
+        if (row > 0) {
+          this.perform(row - 1, col);
+        }
       }
-
-      if (this.checkNorth(currentRow, currentCol)) {
-        this.moveNorth(currentRow, currentCol);
-      }
-
-      if (this.checkEast(currentRow, currentCol)) {
-        this.moveEast(currentRow, currentCol);
-      }
-
-      if (this.checkSouth(currentRow, currentCol)) {
-        this.moveSouth(currentRow, currentCol);
-      }
-
-      if (this.checkWest(currentRow, currentCol)) {
-        this.moveWest(currentRow, currentCol);
-      }
-    },
-    checkNorth(row, col) {
-      let nextRow = row - 1;
-      if (row === 0 || this.previouslyVisited(nextRow, col)) return false;
-
-      return this.maze[nextRow][col] !== 0;
-    },
-    checkEast(row, col) {
-      let nextCol = col + 1;
-      if (
-        col === this.maze[row].length - 1 ||
-        this.previouslyVisited(row, nextCol)
-      )
-        return false;
-
-      return this.maze[row][nextCol] !== 0;
-    },
-    checkSouth(row, col) {
-      let nextRow = row + 1;
-      if (row === this.maze.length - 1 || this.previouslyVisited(nextRow, col))
-        return false;
-
-      return this.maze[nextRow][col] !== 0;
-    },
-    checkWest(row, col) {
-      let nextCol = col - 1;
-      if (col === 0 || this.previouslyVisited(row, nextCol)) return false;
-
-      return this.maze[row][nextCol] !== 0;
-    },
-    moveNorth(row, col) {
-      this.updatePreviousCoordinates(row, col);
-      row -= 1;
-      this.perform(row, col);
-    },
-    moveEast(row, col) {
-      this.updatePreviousCoordinates(row, col);
-      col += 1;
-      this.perform(row, col);
-    },
-    moveSouth(row, col) {
-      this.updatePreviousCoordinates(row, col);
-      row += 1;
-      this.perform(row, col);
-    },
-    moveWest(row, col) {
-      this.updatePreviousCoordinates(row, col);
-      col -= 1;
-      this.perform(row, col);
-    },
-    previouslyVisited(row, col) {
-      return this.previouslyVisitedSteps[row][col];
-    },
-    updatePreviousCoordinates(row, col) {
-      this.previouslyVisitedSteps[row][col] = true;
     },
   },
   mounted() {
