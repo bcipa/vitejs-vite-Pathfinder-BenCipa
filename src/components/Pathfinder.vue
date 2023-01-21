@@ -22,6 +22,9 @@ export default defineComponent({
         if (col !== -1) return [row, col];
       }
     },
+    shortestPathDistance() {
+      return this.bestPath.length - 1;
+    },
   },
   data() {
     return {
@@ -89,7 +92,7 @@ export default defineComponent({
     Show Solution
   </button>
   <h3 v-if="showSolution">
-    It took {{ this.best }} move(s) to complete this maze!
+    It takes only {{ this.shortestPathDistance }} steps to complete this maze!
   </h3>
 </template>
 
