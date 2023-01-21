@@ -9,7 +9,7 @@ export default defineComponent({
   computed: {
     stepClass() {
       let wall = '';
-
+      console.log();
       if (this.stepType === 2) {
         wall = 'is-path';
       }

@@ -23,36 +23,49 @@ export default defineComponent({
       previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
         Array.from({ length: this.maze[0].length }, () => 0)
       ),
+      continueSearch: true,
     };
   },
   methods: {
     perform(row, col) {
       if (this.maze[row][col] === 'x') {
         console.log('DONE!');
+        this.continueSearch = false;
         return;
-      } else if (this.maze[row][col] === 1 && this.maze[row][col] !== 2) {
-        this.maze[row][col] = 2;
+      } else if (
+        this.maze[row][col] === 1 &&
+        this.previouslyVisitedSteps[row][col] !== 2
+      ) {
+        this.previouslyVisitedSteps[row][col] = 2;
+        //if (this.previouslyVisitedSteps.length < 1) this.maze[row][col] = 2;
 
-        if (col < this.maze[0].length - 1) {
+        if (col < this.maze[0].length - 1 && this.continueSearch) {
           this.perform(row, col + 1);
         }
 
-        if (row < this.maze.length - 1) {
+        if (row < this.maze.length - 1 && this.continueSearch) {
           this.perform(row + 1, col);
         }
 
-        if (col > 0) {
+        if (col > 0 && this.continueSearch) {
           this.perform(row, col - 1);
         }
 
-        if (row > 0) {
+        if (row > 0 && this.continueSearch) {
           this.perform(row - 1, col);
         }
+
+        return;
       }
     },
   },
   mounted() {
-    this.perform(this.enteranceCoordinates[0], this.enteranceCoordinates[1]);
+    let solution = this.perform(
+      this.enteranceCoordinates[0],
+      this.enteranceCoordinates[1]
+    );
+    this.maze = this.previouslyVisitedSteps;
+    console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
