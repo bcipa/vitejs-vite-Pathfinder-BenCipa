@@ -41,17 +41,17 @@ export default defineComponent({
 
           if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
             queue.push([x, y + 1]);
-            this.previouslyVisitedSteps[x, y + 1] = 2;
+            this.previouslyVisitedSteps[x][y + 1] = 2;
           }
 
           if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
             queue.push([x + 1, y]);
-            this.previouslyVisitedSteps[x + 1, y] = 2;
+            this.previouslyVisitedSteps[x][y + 1] = 2;
           }
 
-          if (y > 0 && this.canMove(x, y -1)) {
+          if (y > 0 && this.canMove(x, y - 1)) {
             queue.push([x, y - 1]);
-            this.previouslyVisitedSteps[x, y - 1] = 2;
+            this.previouslyVisitedSteps[(x, y - 1] = 2;
           }
 
           if (x > 0 && this.canMove(x - 1, y)) {
@@ -65,7 +65,9 @@ export default defineComponent({
       return movementCount;
     },
     canMove(row, col) {
-      return if this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
+      return (
+        this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
+      );
     },
   },
   mounted() {
