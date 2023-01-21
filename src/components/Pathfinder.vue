@@ -85,5 +85,13 @@ export default defineComponent({
 
 <template>
   <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
-  <button @click="this.animatePath()">Add 1</button>
+  <button class="pf-show-solution-btn" @click="this.animatePath()">
+    Show Solution
+  </button>
 </template>
+
+<style>
+.pf-show-solution-btn {
+  margin-top: 0.5em;
+}
+</style>
