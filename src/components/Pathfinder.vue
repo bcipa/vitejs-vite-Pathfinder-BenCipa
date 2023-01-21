@@ -98,6 +98,6 @@ export default defineComponent({
 
 <style>
 .pf-show-solution-btn {
-  margin-top: 0.5em;
+  margin-top: 1em;
 }
 </style>
