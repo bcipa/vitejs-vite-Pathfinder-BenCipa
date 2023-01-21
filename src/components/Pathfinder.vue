@@ -26,31 +26,46 @@ export default defineComponent({
   },
   methods: {
     perform(row, col) {
-      if (this.maze[row][col] === 'x') {
-        this.continueSearch = false;
-        return;
-      } else if (
-        this.maze[row][col] === 1 &&
-        this.previouslyVisitedSteps[row][col] !== 2
-      ) {
-        this.previouslyVisitedSteps[row][col] = 2;
+      let movementCount = 0;
+      let queue = [[row, col]];
+      while (queue.length) {
+        const len = queue.length;
+        for (let i = 0; i < len; i += 1) {
+          const [x, y] = queue.shift();
 
-        if (this.previouslyVisitedSteps.length > 2) this.maze[row][col] = 2;
+          if (this.maze[x][y] == 'x') {
+            console.log(queue);
+            return movementCount;
+          }
 
-        if (col < this.maze[0].length - 1 && this.continueSearch) {
-          this.perform(row, col + 1);
+          if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
+            queue.push([x, y + 1]);
+            this.moveTo(x, y + 1);
+          }
+          if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
+            queue.push([x + 1, y]);
+            this.moveTo(x + 1, y);
+          }
+          if (y > 0 && this.canMove(x, y - 1)) {
+            queue.push([x, y - 1]);
+            this.moveTo(x, y - 1);
+          }
+          if (x > 0 && this.canMove(x - 1, y)) {
+            queue.push([x - 1, y]);
+            this.moveTo(x - 1, y);
+          }
         }
-        if (row < this.maze.length - 1 && this.continueSearch) {
-          this.perform(row + 1, col);
-        }
-        if (col > 0 && this.continueSearch) {
-          this.perform(row, col - 1);
-        }
-        if (row > 0 && this.continueSearch) {
-          this.perform(row - 1, col);
-        }
-        return;
+        movementCount += 1;
       }
+      return movementCount;
+    },
+    moveTo(row, col) {
+      this.previouslyVisitedSteps[x][y] = 2;
+    },
+    canMove(row, col) {
+      return (
+        this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
+      );
     },
   },
   mounted() {
@@ -58,7 +73,7 @@ export default defineComponent({
       this.enteranceCoordinates[0],
       this.enteranceCoordinates[1]
     );
-    this.maze = this.previouslyVisitedSteps;
+    // this.maze = this.previouslyVisitedSteps;
     console.log(this.previouslyVisitedSteps);
   },
 });
