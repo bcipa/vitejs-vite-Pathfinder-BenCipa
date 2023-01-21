@@ -1,6 +1,7 @@
 <script lang="ts">
-import { defineComponent, createApp } from 'vue';
+import { defineComponent } from 'vue';
 import Maze from './Maze.vue';
+
 export default defineComponent({
   props: {
     maze: Array,
@@ -60,6 +61,11 @@ export default defineComponent({
         this.maze[directions[i][0]][directions[i][1]] != 1
       );
     },
+    animatePath(path) {
+      for (var i = 1; i < path.length - 1; i++) {
+        this.maze[path[i][0]][path[i][1]] = 2;
+      }
+    },
   },
   mounted() {
     let solution = this.perform(
@@ -68,6 +74,8 @@ export default defineComponent({
     );
 
     console.log(solution);
+
+    this.animatePath(solution);
   },
 });
 </script>
