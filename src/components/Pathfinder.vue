@@ -1,7 +1,6 @@
 <script lang="ts">
 import { defineComponent, createApp } from 'vue';
 import Maze from './Maze.vue';
-
 export default defineComponent({
   props: {
     maze: Array,
@@ -14,7 +13,6 @@ export default defineComponent({
       let firstColumn = this.maze.map(function (value, index) {
         return value[0];
       });
-
       return [firstColumn.indexOf(1), 0];
     },
   },
@@ -23,55 +21,36 @@ export default defineComponent({
       previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
         Array.from({ length: this.maze[0].length }, () => 0)
       ),
-      testing: [],
+      continueSearch: true,
     };
   },
   methods: {
     perform(row, col) {
-      let movementCount = 0;
-      let queue = [[row, col]];
-      this.previouslyVisitedSteps[row][col] = 2;
+      if (this.maze[row][col] === 'x') {
+        this.continueSearch = false;
+        return;
+      } else if (
+        this.maze[row][col] === 1 &&
+        this.previouslyVisitedSteps[row][col] !== 2
+      ) {
+        this.previouslyVisitedSteps[row][col] = 2;
 
-      while (queue.length) {
+        if (this.previouslyVisitedSteps.length > 2) this.maze[row][col] = 2;
 
-        for (let i = 0; i < len; i += 1) {
-          const [x, y] = queue.shift();
-          this.maze[x][y] = 2;
-          if (this.maze[x][y] == 'x') return movementCount;
-
-          if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
-            this.testing.push([x, y + 1]);
-            queue.push([x, y + 1]);
-            this.previouslyVisitedSteps[x][y + 1] = 2;
-          }
-
-          if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
-            this.testing.push([x + 1, y]);
-            queue.push([x + 1, y]);
-            this.previouslyVisitedSteps[x + 1][y] = 2;
-          }
-
-          if (y > 0 && this.canMove(x, y - 1)) {
-            this.testing.push([x, y - 1]);
-            queue.push([x, y - 1]);
-            this.previouslyVisitedSteps[x][y - 1] = 2;
-          }
-
-          if (x > 0 && this.canMove(x - 1, y)) {
-            this.testing.push([x, y - 1]);
-            queue.push([x - 1, y]);
-            this.previouslyVisitedSteps[x - 1][y] = 2;
-          }
+        if (col < this.maze[0].length - 1 && this.continueSearch) {
+          this.perform(row, col + 1);
         }
-        movementCount += 1;
+        if (row < this.maze.length - 1 && this.continueSearch) {
+          this.perform(row + 1, col);
+        }
+        if (col > 0 && this.continueSearch) {
+          this.perform(row, col - 1);
+        }
+        if (row > 0 && this.continueSearch) {
+          this.perform(row - 1, col);
+        }
+        return;
       }
-      
-      return movementCount;
-    },
-    canMove(row, col) {
-      return (
-        this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
-      );
     },
   },
   mounted() {
@@ -79,9 +58,8 @@ export default defineComponent({
       this.enteranceCoordinates[0],
       this.enteranceCoordinates[1]
     );
-    console.log(solution);
-    //this.maze = this.previouslyVisitedSteps;
-    //console.log(this.previouslyVisitedSteps);
+    this.maze = this.previouslyVisitedSteps;
+    console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
