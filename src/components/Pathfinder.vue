@@ -23,6 +23,11 @@ export default defineComponent({
       }
     },
   },
+  data() {
+    return {
+      bestPath: [],
+    };
+  },
   methods: {
     perform(startPoint, endPoint) {
       var queue = [[startPoint]];
@@ -61,25 +66,24 @@ export default defineComponent({
         this.maze[directions[i][0]][directions[i][1]] != 1
       );
     },
-    animatePath(path) {
-      for (var i = 1; i < path.length - 1; i++) {
-        this.maze[path[i][0]][path[i][1]] = 2;
+    animatePath() {
+      for (var i = 1; i < this.bestPath.length - 1; i++) {
+        this.maze[this.bestPath[i][0]][this.bestPath[i][1]] = 2;
       }
     },
   },
   mounted() {
-    let solution = this.perform(
+    this.bestPath = this.perform(
       this.enteranceCoordinates,
       this.exitCoordinates
     );
 
     console.log(solution);
-
-    this.animatePath(solution);
   },
 });
 </script>
 
 <template>
   <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
+  <button @click="this.animatePath()">Add 1</button>
 </template>
