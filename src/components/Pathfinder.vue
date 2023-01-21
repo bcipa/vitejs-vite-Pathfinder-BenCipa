@@ -39,50 +39,40 @@ export default defineComponent({
 
           if (this.maze[x][y] == 'x') return movementCount;
 
-          if (
-            y < this.maze[0].length - 1 &&
-            this.maze[x][y + 1] === 1 &&
-            this.previouslyVisitedSteps[x][y + 1] !== 2
-          ) {
+          if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
             queue.push([x, y + 1]);
-            this.previouslyVisitedSteps[(x, y + 1)] = 2;
+            this.previouslyVisitedSteps[x, y + 1] = 2;
           }
-          if (
-            x < this.maze.length - 1 &&
-            this.maze[x + 1][y] === 1 &&
-            this.previouslyVisitedSteps[x][y + 1] !== 2
-          ) {
+
+          if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
             queue.push([x + 1, y]);
-            this.previouslyVisitedSteps[(x + 1, y)] = 2;
+            this.previouslyVisitedSteps[x + 1, y] = 2;
           }
-          if (
-            y > 0 &&
-            this.maze[x][y - 1] === 1 &&
-            this.previouslyVisitedSteps[x][y + 1] !== 2
-          ) {
+
+          if (y > 0 && ) {
             queue.push([x, y - 1]);
-            this.previouslyVisitedSteps[(x, y - 1)] = 2;
+            this.previouslyVisitedSteps[x, y - 1] = 2;
           }
-          if (
-            x > 0 &&
-            this.maze[x - 1][y] === 1 &&
-            this.previouslyVisitedSteps[x][y + 1] !== 2
-          ) {
+
+          if (x > 0 && this.canMove(x + 1, y)) {
             queue.push([x - 1, y]);
-            this.previouslyVisitedSteps[(x - 1, y)] = 2;
+            this.previouslyVisitedSteps[x - 1, y] = 2;
           }
         }
         movementCount += 1;
       }
-      console.log(queue);
+
       return movementCount;
+    },
+    canMove(row, col) {
+      return if this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
     },
   },
   mounted() {
-    // let solution = this.perform(
-    //   this.enteranceCoordinates[0],
-    //   this.enteranceCoordinates[1]
-    // );
+    let solution = this.perform(
+      this.enteranceCoordinates[0],
+      this.enteranceCoordinates[1]
+    );
     //console.log(solution);
     //this.maze = this.previouslyVisitedSteps;
     //console.log(this.previouslyVisitedSteps);
