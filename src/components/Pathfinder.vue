@@ -26,6 +26,7 @@ export default defineComponent({
   data() {
     return {
       bestPath: [],
+      showSolution: false,
     };
   },
   methods: {
@@ -67,6 +68,7 @@ export default defineComponent({
       );
     },
     animatePath() {
+      this.showSolution = true;
       for (var i = 1; i < this.bestPath.length - 1; i++) {
         this.maze[this.bestPath[i][0]][this.bestPath[i][1]] = 2;
       }
@@ -77,17 +79,18 @@ export default defineComponent({
       this.enteranceCoordinates,
       this.exitCoordinates
     );
-
-    console.log(solution);
   },
 });
 </script>
 
 <template>
   <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
-  <button class="pf-show-solution-btn" @click="this.animatePath()">
+  <button class="pf-show-solution-btn" v-on:click="this.animatePath()">
     Show Solution
   </button>
+  <h3 v-if="showSolution">
+    It took {{ this.best }} move(s) to complete this maze!
+  </h3>
 </template>
 
 <style>

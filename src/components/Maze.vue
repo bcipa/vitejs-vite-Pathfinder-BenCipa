@@ -21,16 +21,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div
-    class="pf-maze-row"
-    v-for="(row, rowIndex) in maze"
-    v-bind:key="rowIndex"
-  >
+  <div class="pf-maze-row" v-for="(row, rowIndex) in maze">
     <MazeStep
       v-for="(value, columnIndex) in row"
       v-bind:stepType="value"
       v-bind:isBeginning="isEnterance([rowIndex, columnIndex])"
-      v-bind:key="columnIndex"
     />
   </div>
 </template>
