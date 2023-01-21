@@ -25,6 +25,18 @@ export default defineComponent({
     shortestPathDistance() {
       return this.bestPath.length - 1;
     },
+    solvedMaze() {
+      let bestPath = this.bestPath;
+      let solvedMaze = this.maze.map(function (arr) {
+        return arr.slice();
+      });
+
+      for (var i = 1; i < bestPath.length - 1; i++) {
+        solvedMaze[bestPath[i][0]][bestPath[i][1]] = 2;
+      }
+
+      return solvedMaze;
+    },
   },
   data() {
     return {
@@ -70,12 +82,6 @@ export default defineComponent({
         this.maze[directions[i][0]][directions[i][1]] != 1
       );
     },
-    animatePath() {
-      this.showSolution = true;
-      for (var i = 1; i < this.bestPath.length - 1; i++) {
-        this.maze[this.bestPath[i][0]][this.bestPath[i][1]] = 2;
-      }
-    },
   },
   mounted() {
     this.bestPath = this.perform(
@@ -88,16 +94,33 @@ export default defineComponent({
 
 <template>
   <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
-  <button class="pf-show-solution-btn" v-on:click="this.animatePath()">
+
+  <button class="pf-solution-btn" v-on:click="showSolution = true">
     Show Solution
   </button>
-  <h3 v-if="showSolution">
-    It takes only {{ this.shortestPathDistance }} steps to complete this maze!
-  </h3>
+
+  <div class="pf-solution" v-if="showSolution">
+    <h3 class="pf-solutions-title">
+      It takes only {{ shortestPathDistance }} steps to complete this maze!
+    </h3>
+    <Maze
+      v-bind:maze="solvedMaze"
+      v-bind:enteranceCoordinates="enteranceCoordinates"
+    />
+  </div>
 </template>
 
 <style>
-.pf-show-solution-btn {
+.pf-solution {
+  border: 1px solid green;
+  margin-top: 1em;
+}
+
+.pf-solutions-title {
+  color: green;
+}
+
+.pf-solution-btn {
   margin-top: 1em;
 }
 </style>
