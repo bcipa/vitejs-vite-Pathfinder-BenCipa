@@ -23,45 +23,49 @@ export default defineComponent({
       previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
         Array.from({ length: this.maze[0].length }, () => 0)
       ),
-      continueSearch: true,
+      testing: [],
     };
   },
   methods: {
     perform(row, col) {
       let movementCount = 0;
       let queue = [[row, col]];
+      this.previouslyVisitedSteps[row][col] = 2;
 
       while (queue.length) {
-        const len = queue.length;
 
         for (let i = 0; i < len; i += 1) {
           const [x, y] = queue.shift();
-
+          this.maze[x][y] = 2;
           if (this.maze[x][y] == 'x') return movementCount;
 
           if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
+            this.testing.push([x, y + 1]);
             queue.push([x, y + 1]);
             this.previouslyVisitedSteps[x][y + 1] = 2;
           }
 
           if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
+            this.testing.push([x + 1, y]);
             queue.push([x + 1, y]);
-            this.previouslyVisitedSteps[x][y + 1] = 2;
+            this.previouslyVisitedSteps[x + 1][y] = 2;
           }
 
           if (y > 0 && this.canMove(x, y - 1)) {
+            this.testing.push([x, y - 1]);
             queue.push([x, y - 1]);
-            this.previouslyVisitedSteps[(x, y - 1] = 2;
+            this.previouslyVisitedSteps[x][y - 1] = 2;
           }
 
           if (x > 0 && this.canMove(x - 1, y)) {
+            this.testing.push([x, y - 1]);
             queue.push([x - 1, y]);
-            this.previouslyVisitedSteps[x - 1, y] = 2;
+            this.previouslyVisitedSteps[x - 1][y] = 2;
           }
         }
         movementCount += 1;
       }
-
+      
       return movementCount;
     },
     canMove(row, col) {
@@ -71,11 +75,11 @@ export default defineComponent({
     },
   },
   mounted() {
-    // let solution = this.perform(
-    //   this.enteranceCoordinates[0],
-    //   this.enteranceCoordinates[1]
-    // );
-    //console.log(solution);
+    let solution = this.perform(
+      this.enteranceCoordinates[0],
+      this.enteranceCoordinates[1]
+    );
+    console.log(solution);
     //this.maze = this.previouslyVisitedSteps;
     //console.log(this.previouslyVisitedSteps);
   },
