@@ -22,61 +22,42 @@ export default defineComponent({
       }
     },
   },
-  data() {
-    return {
-      previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
-        Array.from({ length: this.maze[0].length }, () => 0)
-      ),
-      paths: [],
-    };
-  },
   methods: {
     perform(startPoint, endPoint) {
       var queue = [[startPoint]];
 
       while (queue.length > 0) {
         var path = queue.shift();
-        if (path.length == 0) {
-          var pos = path;
-        }
-        var pos = path[path.length - 1];
+        var posistion = path[path.length - 1];
 
-        var direction = [
-          [pos[0] + 1, pos[1]],
-          [pos[0], pos[1] + 1],
-          [pos[0] - 1, pos[1]],
-          [pos[0], pos[1] - 1],
+        var directions = [
+          [posistion[0] + 1, posistion[1]],
+          [posistion[0], posistion[1] + 1],
+          [posistion[0] - 1, posistion[1]],
+          [posistion[0], posistion[1] - 1],
         ];
 
-        for (var i = 0; i < direction.length; i++) {
+        for (var i = 0; i < directions.length; i++) {
           if (
-            direction[i][0] == endPoint[0] &&
-            direction[i][1] == endPoint[1]
+            directions[i][0] == endPoint[0] &&
+            directions[i][1] == endPoint[1]
           ) {
             return path.concat([endPoint]);
           }
-          console.log(direction[i][0]);
-          if (
-            direction[i][0] < 0 ||
-            direction[i][0] >= this.maze.length ||
-            direction[i][1] < 0 ||
-            direction[i][1] >= this.maze[0].length ||
-            this.maze[direction[i][0]][direction[i][1]] != 1
-          ) {
-            continue;
-          }
 
-          this.maze[direction[i][0]][direction[i][1]] = 2;
-          queue.push(path.concat([direction[i]]));
+          if (this.canMove(directions, i)) continue;
+
+          queue.push(path.concat([directions[i]]));
         }
       }
     },
-    moveTo(row, col) {
-      this.previouslyVisitedSteps[row][col] = 2;
-    },
-    canMove(row, col) {
+    canMove(directions, i) {
       return (
-        this.maze[row][col] === 1 && this.previouslyVisitedSteps[row][col] !== 2
+        directions[i][0] < 0 ||
+        directions[i][0] >= this.maze.length ||
+        directions[i][1] < 0 ||
+        directions[i][1] >= this.maze[0].length ||
+        this.maze[directions[i][0]][directions[i][1]] != 1
       );
     },
   },
@@ -87,8 +68,6 @@ export default defineComponent({
     );
 
     console.log(solution);
-    // this.maze = this.previouslyVisitedSteps;
-    // console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
