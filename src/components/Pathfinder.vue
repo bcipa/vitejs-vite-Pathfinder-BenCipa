@@ -15,52 +15,64 @@ export default defineComponent({
       });
       return [firstColumn.indexOf(1), 0];
     },
+    exitCoordinates() {
+      for (let row = 0; row < this.maze.length; row++) {
+        const col = this.maze[row].indexOf('x');
+        if (col !== -1) return [row, col];
+      }
+    },
   },
   data() {
     return {
       previouslyVisitedSteps: Array.from({ length: this.maze.length }, () =>
         Array.from({ length: this.maze[0].length }, () => 0)
       ),
-      continueSearch: true,
+      paths: [],
     };
   },
   methods: {
-    perform(row, col) {
-      let movementCount = 0;
-      let queue = [[row, col]];
-      while (queue.length) {
-        const len = queue.length;
-        for (let i = 0; i < len; i += 1) {
-          const [x, y] = queue.shift();
+    perform(startPoint, endPoint) {
+      var queue = [[startPoint]];
 
-          if (this.maze[x][y] == 'x') {
-            console.log(queue);
-            return movementCount;
-          }
-
-          if (y < this.maze[0].length - 1 && this.canMove(x, y + 1)) {
-            queue.push([x, y + 1]);
-            this.moveTo(x, y + 1);
-          }
-          if (x < this.maze.length - 1 && this.canMove(x + 1, y)) {
-            queue.push([x + 1, y]);
-            this.moveTo(x + 1, y);
-          }
-          if (y > 0 && this.canMove(x, y - 1)) {
-            queue.push([x, y - 1]);
-            this.moveTo(x, y - 1);
-          }
-          if (x > 0 && this.canMove(x - 1, y)) {
-            queue.push([x - 1, y]);
-            this.moveTo(x - 1, y);
-          }
+      while (queue.length > 0) {
+        var path = queue.shift();
+        if (path.length == 0) {
+          var pos = path;
         }
-        movementCount += 1;
+        var pos = path[path.length - 1];
+
+        var direction = [
+          [pos[0] + 1, pos[1]],
+          [pos[0], pos[1] + 1],
+          [pos[0] - 1, pos[1]],
+          [pos[0], pos[1] - 1],
+        ];
+
+        for (var i = 0; i < direction.length; i++) {
+          if (
+            direction[i][0] == endPoint[0] &&
+            direction[i][1] == endPoint[1]
+          ) {
+            return path.concat([endPoint]);
+          }
+          console.log(direction[i][0]);
+          if (
+            direction[i][0] < 0 ||
+            direction[i][0] >= this.maze.length ||
+            direction[i][1] < 0 ||
+            direction[i][1] >= this.maze[0].length ||
+            this.maze[direction[i][0]][direction[i][1]] != 1
+          ) {
+            continue;
+          }
+
+          this.maze[direction[i][0]][direction[i][1]] = 2;
+          queue.push(path.concat([direction[i]]));
+        }
       }
-      return movementCount;
     },
     moveTo(row, col) {
-      this.previouslyVisitedSteps[x][y] = 2;
+      this.previouslyVisitedSteps[row][col] = 2;
     },
     canMove(row, col) {
       return (
@@ -70,11 +82,13 @@ export default defineComponent({
   },
   mounted() {
     let solution = this.perform(
-      this.enteranceCoordinates[0],
-      this.enteranceCoordinates[1]
+      this.enteranceCoordinates,
+      this.exitCoordinates
     );
+
+    console.log(solution);
     // this.maze = this.previouslyVisitedSteps;
-    console.log(this.previouslyVisitedSteps);
+    // console.log(this.previouslyVisitedSteps);
   },
 });
 </script>
@@ -82,9 +96,3 @@ export default defineComponent({
 <template>
   <Maze v-bind:maze="maze" v-bind:enteranceCoordinates="enteranceCoordinates" />
 </template>
-
-<style scoped>
-.pf-maze-row {
-  display: flex;
-}
-</style>

@@ -9,7 +9,7 @@ export default defineComponent({
   computed: {
     stepClass() {
       let wall = '';
-      console.log();
+
       if (this.stepType === 2) {
         wall = 'is-path';
       }
@@ -18,12 +18,12 @@ export default defineComponent({
         wall = 'is-barricade';
       }
 
-      if (this.isBeginning) {
-        wall = 'is-beginning';
-      }
-
       if (this.stepType === 'x') {
         wall = 'is-finish';
+      }
+
+      if (this.isBeginning) {
+        wall = 'is-beginning';
       }
 
       return wall;
