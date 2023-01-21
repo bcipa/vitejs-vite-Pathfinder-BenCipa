@@ -49,12 +49,12 @@ export default defineComponent({
             this.previouslyVisitedSteps[x + 1, y] = 2;
           }
 
-          if (y > 0 && ) {
+          if (y > 0 && this.canMove(x, y -1)) {
             queue.push([x, y - 1]);
             this.previouslyVisitedSteps[x, y - 1] = 2;
           }
 
-          if (x > 0 && this.canMove(x + 1, y)) {
+          if (x > 0 && this.canMove(x - 1, y)) {
             queue.push([x - 1, y]);
             this.previouslyVisitedSteps[x - 1, y] = 2;
           }
