@@ -71,10 +71,10 @@ export default defineComponent({
     },
   },
   mounted() {
-    let solution = this.perform(
-      this.enteranceCoordinates[0],
-      this.enteranceCoordinates[1]
-    );
+    // let solution = this.perform(
+    //   this.enteranceCoordinates[0],
+    //   this.enteranceCoordinates[1]
+    // );
     //console.log(solution);
     //this.maze = this.previouslyVisitedSteps;
     //console.log(this.previouslyVisitedSteps);
