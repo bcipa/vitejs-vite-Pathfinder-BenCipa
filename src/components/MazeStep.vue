@@ -8,25 +8,25 @@ export default defineComponent({
   },
   computed: {
     stepClass() {
-      let wall = '';
+      let step = '';
 
       if (this.stepType === 2) {
-        wall = 'is-path';
+        step = 'is-path';
       }
 
       if (this.stepType === 0) {
-        wall = 'is-barricade';
+        step = 'is-barricade';
       }
 
       if (this.stepType === 'x') {
-        wall = 'is-finish';
+        step = 'is-finish';
       }
 
       if (this.isBeginning) {
-        wall = 'is-beginning';
+        step = 'is-beginning';
       }
 
-      return wall;
+      return step;
     },
   },
 });
